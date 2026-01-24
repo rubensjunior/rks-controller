@@ -1,7 +1,15 @@
 {
   "direct": true,
-  "type": "sqlite3",
+  "type": "postgres",
   "connection": {
-    "filename": "/db/db_dev.sqlite3"
+    "host": "aws-1-sa-east-1.pooler.supabase.com",
+    "port": 6543,
+    "user": "postgres.zzbmtvzdhlzodysduecs",
+    "password": "@Tanatos025",
+    "database": "postgres"
+  },
+  "schema": {
+    "tables": {},
+    "views": {}
   }
 }
