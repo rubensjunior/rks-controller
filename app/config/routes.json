@@ -5,6 +5,12 @@
       "page": "index",
       "routeType": "page",
       "layout": "main"
+    },
+    {
+      "path": "/adm/security/",
+      "page": "master/inicial",
+      "layout": "administrador",
+      "name": "inicial-admin"
     }
   ]
 }
