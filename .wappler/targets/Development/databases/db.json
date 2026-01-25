@@ -31,64 +31,6 @@
           "comment": "Table with encrypted `secret` column for storing sensitive information on disk."
         }
       },
-      "storage.buckets": {
-        "db": {
-          "schema": "storage"
-        },
-        "refs": {
-          "storage.s3_multipart_uploads": "bucket_id",
-          "storage.s3_multipart_uploads_parts": "bucket_id",
-          "storage.prefixes": "bucket_id",
-          "storage.objects": "bucket_id"
-        }
-      },
-      "storage.migrations": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.s3_multipart_uploads": {
-        "db": {
-          "schema": "storage"
-        },
-        "sub": {
-          "storage.s3_multipart_uploads_parts": "upload_id"
-        }
-      },
-      "storage.buckets_vectors": {
-        "db": {
-          "schema": "storage"
-        },
-        "refs": {
-          "storage.vector_indexes": "bucket_id"
-        }
-      },
-      "storage.s3_multipart_uploads_parts": {
-        "db": {
-          "schema": "storage"
-        },
-        "parent": "s3_multipart_uploads"
-      },
-      "storage.prefixes": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.vector_indexes": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.buckets_analytics": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.objects": {
-        "db": {
-          "schema": "storage"
-        }
-      },
       "auth.saml_relay_states": {
         "db": {
           "schema": "auth",
@@ -232,9 +174,101 @@
           "schema": "auth",
           "comment": "Stores OAuth states for third-party provider authentication flows where Supabase acts as the OAuth client."
         }
+      },
+      "storage.buckets": {
+        "db": {
+          "schema": "storage"
+        },
+        "refs": {
+          "storage.s3_multipart_uploads": "bucket_id",
+          "storage.s3_multipart_uploads_parts": "bucket_id",
+          "storage.prefixes": "bucket_id",
+          "storage.objects": "bucket_id"
+        }
+      },
+      "storage.migrations": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.s3_multipart_uploads": {
+        "db": {
+          "schema": "storage"
+        },
+        "sub": {
+          "storage.s3_multipart_uploads_parts": "upload_id"
+        }
+      },
+      "storage.buckets_vectors": {
+        "db": {
+          "schema": "storage"
+        },
+        "refs": {
+          "storage.vector_indexes": "bucket_id"
+        }
+      },
+      "storage.s3_multipart_uploads_parts": {
+        "db": {
+          "schema": "storage"
+        },
+        "parent": "s3_multipart_uploads"
+      },
+      "storage.prefixes": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.vector_indexes": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.buckets_analytics": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.objects": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "empresas": {
+        "db": {
+          "schema": "public"
+        },
+        "refs": {
+          "usuarios": "empresa_selecionada",
+          "usuario_empresa": "ref_empresa",
+          "departamentos": "empresa_dep_ref"
+        }
+      },
+      "usuarios": {
+        "db": {
+          "schema": "public"
+        },
+        "sub": {
+          "usuario_empresa": "ref_user"
+        }
+      },
+      "usuario_empresa": {
+        "db": {
+          "schema": "public"
+        },
+        "parent": "usuarios"
+      },
+      "departamentos": {
+        "db": {
+          "schema": "public"
+        }
       }
     },
     "views": {
+      "vault.decrypted_secrets": {
+        "db": {
+          "schema": "vault"
+        }
+      },
       "extensions.pg_stat_statements_info": {
         "db": {
           "schema": "extensions"
@@ -243,11 +277,6 @@
       "extensions.pg_stat_statements": {
         "db": {
           "schema": "extensions"
-        }
-      },
-      "vault.decrypted_secrets": {
-        "db": {
-          "schema": "vault"
         }
       }
     },

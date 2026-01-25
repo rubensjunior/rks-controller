@@ -1,0 +1,16 @@
+{
+  "name": "autenticacao",
+  "module": "auth",
+  "action": "provider",
+  "options": {
+    "secret": "GfwtWq098h4g3JN",
+    "provider": "Single",
+    "connection": "db"
+  },
+  "meta": [
+    {
+      "name": "identity",
+      "type": "text"
+    }
+  ]
+}
