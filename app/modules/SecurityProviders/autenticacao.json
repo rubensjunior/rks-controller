@@ -4,8 +4,17 @@
   "action": "provider",
   "options": {
     "secret": "GfwtWq098h4g3JN",
-    "provider": "Single",
-    "connection": "db"
+    "provider": "Database",
+    "connection": "db",
+    "passwordVerify": true,
+    "expires": 5,
+    "users": {
+      "table": "usuarios",
+      "identity": "id_usuarios",
+      "username": "e-mail",
+      "password": "password"
+    },
+    "permissions": {}
   },
   "meta": [
     {
