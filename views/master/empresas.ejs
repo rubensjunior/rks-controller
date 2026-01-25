@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/administrador" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="empresas" appConnect="local" components="{dmxBootstrap5Offcanvas:{},dmxValidator:{}}" -->
+<!-- Wappler include head-page="layouts/administrador" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="empresas" appConnect="local" components="{dmxBootstrap5Offcanvas:{},dmxValidator:{},dmxFormatter:{}}" -->
 <div class="offcanvas offcanvas-end w-50" id="criar_empresa_modal" is="dmx-bs5-offcanvas" tabindex="-1">
 
     <div class="offcanvas-header">
@@ -6,7 +6,7 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <form id="form_cadastrar_empresa" is="dmx-serverconnect-form" method="post" action="/api/master-apis/cadastrar-empresa" dmx-on:error="form_cadastrar_empresa.reset();criar_empresa_modal.hide();notificacoes.danger('Ocorreu um erro: '+lastError.status+' '+lastError.message+' '+lastError.response)" dmx-on:success="form_cadastrar_empresa.reset();criar_empresa_modal.hide();notificacoes.success('Empresa cadastrada com sucesso!')">
+        <form id="form_cadastrar_empresa" is="dmx-serverconnect-form" method="post" action="/api/master-apis/cadastrar-empresa" dmx-on:error="form_cadastrar_empresa.reset();criar_empresa_modal.hide();notificacoes.danger('Ocorreu um erro: '+lastError.status+' '+lastError.message+' '+lastError.response)" dmx-on:success="run({condition:{outputType:'boolean',if:`form_cadastrar_empresa.data.resposta.isEmpty()`,then:{steps:{run:{outputType:'text',action:`form_cadastrar_empresa.reset();criar_empresa_modal.hide();notificacoes.success(\'Empresa cadastrada com sucesso!\')`}}},else:{steps:{run:{outputType:'text',action:`notificacoes.warning(form_cadastrar_empresa.data.resposta)`}}}}})">
 
             <div class="form-group mb-3"> <label for="razao_social_ipt" class="form-label">Razão social</label>
                 <input type="text" class="form-control" id="razao_social_ipt" name="razao_social_ipt" aria-describedby="input1_help" required="" data-msg-required="Este é um campo obrigatório!">

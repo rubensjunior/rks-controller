@@ -87,188 +87,274 @@
   "exec": {
     "steps": [
       {
-        "name": "validate_cnpj",
-        "module": "validator",
-        "action": "validate",
-        "options": {
-          "data": [
-            {
-              "name": "validate_1",
-              "value": "{{$_POST.cnpj_ipt}}",
-              "rules": {
-                "db:notexists": {
-                  "param": {
-                    "connection": "db",
-                    "table": "empresas",
-                    "column": "cnpj"
-                  },
-                  "message": "CNPJ já cadastrado!"
-                }
-              },
-              "fieldName": "cnpj"
-            }
-          ]
-        }
-      },
-      {
-        "name": "insert_empresa",
-        "module": "dbupdater",
-        "action": "insert",
+        "name": "query_validar_cnpj",
+        "module": "dbconnector",
+        "action": "single",
         "options": {
           "connection": "db",
           "sql": {
-            "type": "insert",
-            "values": [
+            "type": "SELECT",
+            "columns": [
               {
                 "table": "empresas",
-                "column": "razao_social",
-                "type": "text",
-                "value": "{{$_POST.razao_social_ipt}}"
+                "column": "id"
               },
               {
                 "table": "empresas",
-                "column": "nome_fantasia",
-                "type": "text",
-                "value": "{{$_POST.nome_fantasia_ipt}}"
+                "column": "cnpj"
               },
               {
                 "table": "empresas",
-                "column": "cnpj",
-                "type": "text",
-                "value": "{{$_POST.cnpj_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "cep",
-                "type": "text",
-                "value": "{{$_POST.cep_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "endereco",
-                "type": "text",
-                "value": "{{$_POST.endereco_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "bairro",
-                "type": "text",
-                "value": "{{$_POST.bairro_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "cidade",
-                "type": "text",
-                "value": "{{$_POST.cidade_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "estado",
-                "type": "text",
-                "value": "{{$_POST.estado_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "status",
-                "type": "text",
-                "value": "{{'Ativo'}}"
-              },
-              {
-                "table": "empresas",
-                "column": "numero_endereco",
-                "type": "text",
-                "value": "{{$_POST.numero_ipt}}"
-              },
-              {
-                "table": "empresas",
-                "column": "complemento",
-                "type": "text",
-                "value": "{{$_POST.complemento_ipt}}"
+                "column": "razao_social"
               }
             ],
-            "table": "empresas",
-            "returning": "id",
-            "query": "insert into \"empresas\" (\"bairro\", \"cep\", \"cidade\", \"cnpj\", \"complemento\", \"endereco\", \"estado\", \"nome_fantasia\", \"numero_endereco\", \"razao_social\", \"status\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             "params": [
               {
+                "operator": "equal",
+                "type": "expression",
                 "name": ":P1",
-                "type": "expression",
-                "value": "{{$_POST.razao_social_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P2",
-                "type": "expression",
-                "value": "{{$_POST.nome_fantasia_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
                 "value": "{{$_POST.cnpj_ipt}}",
                 "test": ""
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
-                "value": "{{$_POST.cep_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P5",
-                "type": "expression",
-                "value": "{{$_POST.endereco_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P6",
-                "type": "expression",
-                "value": "{{$_POST.bairro_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P7",
-                "type": "expression",
-                "value": "{{$_POST.cidade_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P8",
-                "type": "expression",
-                "value": "{{$_POST.estado_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P9",
-                "type": "expression",
-                "value": "{{'Ativo'}}",
-                "test": ""
-              },
-              {
-                "name": ":P10",
-                "type": "expression",
-                "value": "{{$_POST.numero_ipt}}",
-                "test": ""
-              },
-              {
-                "name": ":P11",
-                "type": "expression",
-                "value": "{{$_POST.complemento_ipt}}",
-                "test": ""
               }
-            ]
+            ],
+            "table": {
+              "name": "empresas"
+            },
+            "primary": "id",
+            "joins": [],
+            "orders": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "empresas.cnpj",
+                  "field": "empresas.cnpj",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.cnpj_ipt}}",
+                  "data": {
+                    "table": "empresas",
+                    "column": "cnpj",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": -5,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "cnpj"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select \"id\", \"cnpj\", \"razao_social\" from \"empresas\" where \"empresas\".\"cnpj\" = ?"
           }
         },
+        "output": true,
         "meta": [
           {
-            "name": "identity",
-            "type": "text"
+            "type": "text",
+            "name": "id"
           },
           {
-            "name": "affected",
-            "type": "number"
+            "type": "text",
+            "name": "cnpj"
+          },
+          {
+            "type": "text",
+            "name": "razao_social"
           }
-        ]
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query_validar_cnpj.cnpj==$_POST.cnpj_ipt}}",
+          "then": {
+            "steps": {
+              "name": "resposta",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "key": "resposta",
+                "value": "{{'Empresa: '+query_validar_cnpj.razao_social+' - '+query_validar_cnpj.cnpj+' já cadastrado.'}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "insert_empresa",
+              "module": "dbupdater",
+              "action": "insert",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "insert",
+                  "values": [
+                    {
+                      "table": "empresas",
+                      "column": "razao_social",
+                      "type": "text",
+                      "value": "{{$_POST.razao_social_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "nome_fantasia",
+                      "type": "text",
+                      "value": "{{$_POST.nome_fantasia_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "cnpj",
+                      "type": "text",
+                      "value": "{{$_POST.cnpj_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "cep",
+                      "type": "text",
+                      "value": "{{$_POST.cep_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "endereco",
+                      "type": "text",
+                      "value": "{{$_POST.endereco_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "bairro",
+                      "type": "text",
+                      "value": "{{$_POST.bairro_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "cidade",
+                      "type": "text",
+                      "value": "{{$_POST.cidade_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "estado",
+                      "type": "text",
+                      "value": "{{$_POST.estado_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "status",
+                      "type": "text",
+                      "value": "{{'Ativo'}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "numero_endereco",
+                      "type": "text",
+                      "value": "{{$_POST.numero_ipt}}"
+                    },
+                    {
+                      "table": "empresas",
+                      "column": "complemento",
+                      "type": "text",
+                      "value": "{{$_POST.complemento_ipt}}"
+                    }
+                  ],
+                  "table": "empresas",
+                  "returning": "id",
+                  "query": "insert into \"empresas\" (\"bairro\", \"cep\", \"cidade\", \"cnpj\", \"complemento\", \"endereco\", \"estado\", \"nome_fantasia\", \"numero_endereco\", \"razao_social\", \"status\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{$_POST.razao_social_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{$_POST.nome_fantasia_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{$_POST.cnpj_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{$_POST.cep_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{$_POST.endereco_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P6",
+                      "type": "expression",
+                      "value": "{{$_POST.bairro_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P7",
+                      "type": "expression",
+                      "value": "{{$_POST.cidade_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P8",
+                      "type": "expression",
+                      "value": "{{$_POST.estado_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P9",
+                      "type": "expression",
+                      "value": "{{'Ativo'}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P10",
+                      "type": "expression",
+                      "value": "{{$_POST.numero_ipt}}",
+                      "test": ""
+                    },
+                    {
+                      "name": ":P11",
+                      "type": "expression",
+                      "value": "{{$_POST.complemento_ipt}}",
+                      "test": ""
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "identity",
+                  "type": "text"
+                },
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "outputType": "boolean"
       }
     ]
   }
