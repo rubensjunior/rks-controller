@@ -6,7 +6,7 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <form id="form_cadastrar_empresa">
+        <form id="form_cadastrar_empresa" is="dmx-serverconnect-form" method="post" action="/api/master-apis/cadastrar-empresa" dmx-on:error="form_cadastrar_empresa.reset();criar_empresa_modal.hide();notificacoes.danger('Ocorreu um erro: '+lastError.status+' '+lastError.message+' '+lastError.response)" dmx-on:success="form_cadastrar_empresa.reset();criar_empresa_modal.hide();notificacoes.success('Empresa cadastrada com sucesso!')">
 
             <div class="form-group mb-3"> <label for="razao_social_ipt" class="form-label">Razão social</label>
                 <input type="text" class="form-control" id="razao_social_ipt" name="razao_social_ipt" aria-describedby="input1_help" required="" data-msg-required="Este é um campo obrigatório!">
@@ -97,8 +97,8 @@
         </form>
     </div>
     <div class="offcanvas-header gap-3">
-        <button id="btn2" class="btn btn-outline-secondary">Cancelar</button>
-        <button id="btn3" class="btn btn-primary">Cadastrar</button>
+        <button id="btn2" class="btn btn-outline-secondary" dmx-on:click="form_cadastrar_empresa.reset();criar_empresa_modal.hide()">Cancelar</button>
+        <button id="btn3" class="btn btn-primary" dmx-on:click="form_cadastrar_empresa.submit()">Cadastrar</button>
     </div>
 </div>
 <div class="container-fluid">
