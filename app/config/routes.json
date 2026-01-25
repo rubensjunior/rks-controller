@@ -11,6 +11,11 @@
       "page": "master/inicial",
       "layout": "administrador",
       "name": "inicial-admin"
+    },
+    {
+      "path": "/adm/security/empresas",
+      "page": "master/empresas",
+      "layout": "administrador"
     }
   ]
 }
