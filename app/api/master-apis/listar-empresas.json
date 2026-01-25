@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query_empresas",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "empresas",
+              "column": "id"
+            },
+            {
+              "table": "empresas",
+              "column": "emp_created_at"
+            },
+            {
+              "table": "empresas",
+              "column": "razao_social"
+            },
+            {
+              "table": "empresas",
+              "column": "nome_fantasia"
+            },
+            {
+              "table": "empresas",
+              "column": "cnpj"
+            },
+            {
+              "table": "empresas",
+              "column": "endereco"
+            },
+            {
+              "table": "empresas",
+              "column": "numero_endereco"
+            },
+            {
+              "table": "empresas",
+              "column": "cep"
+            },
+            {
+              "table": "empresas",
+              "column": "complemento"
+            },
+            {
+              "table": "empresas",
+              "column": "bairro"
+            },
+            {
+              "table": "empresas",
+              "column": "cidade"
+            },
+            {
+              "table": "empresas",
+              "column": "estado"
+            },
+            {
+              "table": "empresas",
+              "column": "status"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "empresas"
+          },
+          "primary": "id",
+          "joins": [],
+          "query": "select \"id\", \"emp_created_at\", \"razao_social\", \"nome_fantasia\", \"cnpj\", \"endereco\", \"numero_endereco\", \"cep\", \"complemento\", \"bairro\", \"cidade\", \"estado\", \"status\" from \"empresas\""
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "id"
+            },
+            {
+              "type": "datetime",
+              "name": "emp_created_at"
+            },
+            {
+              "type": "text",
+              "name": "razao_social"
+            },
+            {
+              "type": "text",
+              "name": "nome_fantasia"
+            },
+            {
+              "type": "text",
+              "name": "cnpj"
+            },
+            {
+              "type": "text",
+              "name": "endereco"
+            },
+            {
+              "type": "text",
+              "name": "numero_endereco"
+            },
+            {
+              "type": "text",
+              "name": "cep"
+            },
+            {
+              "type": "text",
+              "name": "complemento"
+            },
+            {
+              "type": "text",
+              "name": "bairro"
+            },
+            {
+              "type": "text",
+              "name": "cidade"
+            },
+            {
+              "type": "text",
+              "name": "estado"
+            },
+            {
+              "type": "text",
+              "name": "status"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

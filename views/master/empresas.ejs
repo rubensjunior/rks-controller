@@ -1,4 +1,5 @@
-<!-- Wappler include head-page="layouts/administrador" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="empresas" appConnect="local" components="{dmxBootstrap5Offcanvas:{},dmxValidator:{},dmxFormatter:{}}" -->
+<!-- Wappler include head-page="layouts/administrador" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="empresas" appConnect="local" components="{dmxBootstrap5Offcanvas:{},dmxValidator:{},dmxFormatter:{},dmxBootstrap5TableGenerator:{}}" -->
+<dmx-serverconnect id="listar_empresa" url="/api/master-apis/listar-empresas"></dmx-serverconnect>
 <div class="offcanvas offcanvas-end w-50" id="criar_empresa_modal" is="dmx-bs5-offcanvas" tabindex="-1">
 
     <div class="offcanvas-header">
@@ -102,7 +103,7 @@
     </div>
 </div>
 <div class="container-fluid">
-    <div class="row align-items-center pb-3 border-bottom">
+    <div class="row align-items-center pb-3 mb-3 border-bottom">
         <div class="col align-self-center">
             <h3 class="m-0">Empresas</h3>
         </div>
@@ -110,7 +111,34 @@
             <button id="btn1" class="btn btn-warning" data-bs-toggle="offcanvas" data-bs-target="#criar_empresa_modal">Adicionar Empresa</button>
         </div>
     </div>
-    <div class="row"></div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Razao social</th>
+                        <th>Nome fantasia</th>
+                        <th>Cnpj</th>
+                        <th>Cep</th>
+                        <th>Cidade</th>
+                        <th>Estado</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="listar_empresa.data.query_empresas.data" id="tableRepeat2">
+                    <tr>
+                        <td dmx-text="razao_social"></td>
+                        <td dmx-text="nome_fantasia"></td>
+                        <td dmx-text="cnpj"></td>
+                        <td dmx-text="cep"></td>
+                        <td dmx-text="cidade"></td>
+                        <td dmx-text="estado"></td>
+                        <td dmx-text="status"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <meta name="ac:route" content="/adm/security/empresas">
 
