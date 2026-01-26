@@ -6,5 +6,9 @@
   "empresas.ejs": {
     "layoutPage": "administrador",
     "description": ""
+  },
+  "usuarios.ejs": {
+    "layoutPage": "administrador",
+    "description": ""
   }
 }

@@ -16,6 +16,11 @@
       "path": "/adm/security/empresas",
       "page": "master/empresas",
       "layout": "administrador"
+    },
+    {
+      "path": "/adm/security/usuarios",
+      "page": "master/usuarios",
+      "layout": "administrador"
     }
   ]
 }
