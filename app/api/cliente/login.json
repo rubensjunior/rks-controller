@@ -1,3 +1,40 @@
 {
-  "exec": {}
+  "meta": {
+    "options": {
+      "linkedFile": "/views/index.ejs",
+      "linkedForm": "form_login"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "email_ipt",
+        "options": {
+          "rules": {}
+        },
+        "name": "email_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "password",
+        "options": {
+          "rules": {}
+        },
+        "name": "password"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "identity",
+      "module": "auth",
+      "action": "login",
+      "options": {
+        "provider": "autenticacao",
+        "username": "{{$_POST.email_ipt}}",
+        "remember": 1
+      },
+      "output": true,
+      "meta": []
+    }
+  }
 }
