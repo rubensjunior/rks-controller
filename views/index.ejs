@@ -7,7 +7,6 @@
                 <div class="col-5">
                     <h3 class="text-center fw-bold">Bem-vindo ao RKS Controller</h3>
                     <p class="text-center text-light-emphasis mb-5">Use sua credenciais para acessar a nossa plataforma de maneira segura.</p>
-                    <p class="text-center text-light-emphasis mb-5" dmx-on:click="logout_user.load({},true)">Usuario logado: {{usuario_atual.data.query_dados_usuario.nome_completo}}</p>
                     <form id="form_login" is="dmx-serverconnect-form" method="post" credentials="true" action="/api/cliente/login" dmx-on:error="notificacoes.danger('Ocorreu um erro ao efetuar seu login. Entre em contato com o nosso suporte: suporte@rkstechsolution.com.br')" dmx-on:unauthorized="notificacoes.warning('Usuario ou senha não identificados. Verifique suas credenciais ou entre em contato com o time de T.I de sua empresa.')">
                         <div class="form-group mb-3"> <label for="email_ipt" class="form-label">E-mail</label>
                             <input type="email" class="form-control py-2" id="email_ipt" name="email_ipt" aria-describedby="input1_help" required="" data-msg-required="Este é um campo obrigatório!" data-rule-email="" data-msg-email="Insira um e-mail válido!">
