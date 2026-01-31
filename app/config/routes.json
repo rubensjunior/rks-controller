@@ -21,6 +21,11 @@
       "path": "/adm/security/usuarios",
       "page": "master/usuarios",
       "layout": "administrador"
+    },
+    {
+      "path": "/in/security/backoffice/",
+      "page": "adminClient/inicial",
+      "layout": "dashboard"
     }
   ]
 }

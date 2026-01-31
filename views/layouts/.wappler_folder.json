@@ -1,5 +1,8 @@
 {
   "administrador.ejs": {
     "description": ""
+  },
+  "dashboard.ejs": {
+    "description": ""
   }
 }
