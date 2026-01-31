@@ -1,41 +1,41 @@
-<!-- Wappler include head-page="layouts/administrador" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="usuarios" appConnect="local" components="{dmxBootstrap5Offcanvas:{},dmxPreloader:{}}" -->
+<!-- Wappler include head-page="layouts/administrador" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="usuarios" appConnect="local" components="{dmxBootstrap5Offcanvas:{},dmxPreloader:{},dmxValidator:{},dmxBootstrap5TableGenerator:{}}" -->
+
 <dmx-preloader id="preloader1" spinner="wanderingCubes"></dmx-preloader>
 <dmx-serverconnect id="lista_empresas" url="/api/master-apis/listar-empresas"></dmx-serverconnect>
+<dmx-serverconnect id="lista_usuarios" url="/api/master-apis/listas-usuarios"></dmx-serverconnect>
 <div class="offcanvas w-50 offcanvas-end" id="criar_usuarios_offcanvas" is="dmx-bs5-offcanvas" tabindex="-1">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">Novo Usuário</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" dmx-on:click="criar_usuario_form.reset()"></button>
     </div>
     <div class="offcanvas-body">
-        <form id="form1">
+        <form id="criar_usuario_form" is="dmx-serverconnect-form" method="post" action="/api/master-apis/cadastrar-usuario" dmx-on:error="criar_usuarios_offcanvas.hide();criar_usuario_form.reset();notificacoes.danger('Ocorreu um erro: '+lastError.status+lastError.message+lastError.response)" dmx-on:success="lista_usuarios.load({});criar_usuario_form.reset();criar_usuarios_offcanvas.hide();notificacoes.success(criar_usuario_form.data.resposta)">
             <div class="form-group mb-3"> <label for="nome_completo_ipt" class="form-label">Nome completo</label>
-                <input type="text" class="form-control" id="nome_completo_ipt" name="nome_completo_ipt" aria-describedby="input1_help1">
+                <input type="text" class="form-control" id="nome_completo_ipt" name="nome_completo_ipt" aria-describedby="input1_help1" required="" data-msg-required="Este é um campo obrigatório!">
             </div>
             <div class="form-group mb-3"> <label for="input1" class="form-label">Empresa</label>
-                <select id="empresa_ipt" class="form-select" name="empresa_ipt" dmx-bind:options="lista_empresas.data.query_empresas.data" optiontext="razao_social+' - '+nome_fantasia" optionvalue="id">
+                <select id="empresa_ipt" class="form-select" name="empresa_ipt" dmx-bind:options="lista_empresas.data.query_empresas.data" optiontext="razao_social+' - '+nome_fantasia" optionvalue="id" required="" data-msg-required="Este é um campo obrigatório!">
                     <option value="">Selecione uma empresa</option>
                 </select>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="form-group mb-3"> <label for="cpf_ipt" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="cpf_ipt" name="cpf_ipt" aria-describedby="input1_help2">
+                        <input type="text" class="form-control" id="cpf_ipt" name="cpf_ipt" aria-describedby="input1_help2" placeholder="000.000.000-00" required="" data-msg-required="Este é um campo obrigatório!">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group mb-3"> <label for="email_ipt" class="form-label">E-mail</label>
-                        <input type="text" class="form-control" id="email_ipt" name="email_ipt" aria-describedby="input1_help3">
+                        <input type="text" class="form-control" id="email_ipt" name="email_ipt" aria-describedby="input1_help3" required="" data-msg-required="Este é um campo obrigatório!" data-rule-email="" data-msg-email="Insira um e-mail válido.">
                     </div>
                 </div>
             </div>
 
-
-
         </form>
     </div>
     <div class="offcanvas-header gap-3">
-        <button id="btn2" class="btn btn-outline-secondary">Cancelar</button>
-        <button id="btn3" class="btn btn-primary">Cadastrar</button>
+        <button id="btn2" class="btn btn-outline-secondary" dmx-on:click="criar_usuario_form.reset();criar_usuarios_offcanvas.hide()">Cancelar</button>
+        <button id="btn3" class="btn btn-primary" dmx-on:click="criar_usuario_form.submit()">Cadastrar</button>
     </div>
 
 </div>
@@ -48,6 +48,47 @@
             <button id="btn1" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#criar_usuarios_offcanvas">Adicionar Usuários</button>
         </div>
     </div>
-    <div class="row"></div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id usuarios</th>
+                    <th>Nome completo</th>
+                    <th>Cpf</th>
+                    <th>E mail</th>
+                    <th>Apelido</th>
+                    <th>Empresa selecionada</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="lista_usuarios.data.query_usuarios.data" id="tableRepeat1">
+                <tr>
+                    <td dmx-text="id_usuarios"></td>
+                    <td dmx-text="nome_completo"></td>
+                    <td dmx-text="cpf"></td>
+                    <td dmx-text="['e-mail']"></td>
+                    <td dmx-text="apelido"></td>
+                    <td dmx-text="empresa_selecionada"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <meta name="ac:route" content="/adm/security/usuarios">
+
+<script>
+    // Máscara para CPF: 000.000.000-00
+    document.getElementById('cpf_ipt').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+        
+        if (value.length > 11) {
+            value = value.slice(0, 11); // Limita a 11 dígitos
+        }
+        
+        // Aplica a máscara
+        if (value.length > 0) {
+            value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        }
+        
+        e.target.value = value;
+    });
+</script>

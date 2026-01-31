@@ -1,0 +1,557 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/master/usuarios.ejs",
+      "linkedForm": "criar_usuario_form"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "nome_completo_ipt",
+        "options": {
+          "rules": {}
+        },
+        "name": "nome_completo_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "cpf_ipt",
+        "options": {
+          "rules": {}
+        },
+        "name": "cpf_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "email_ipt",
+        "options": {
+          "rules": {}
+        },
+        "name": "email_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "empresa_ipt",
+        "options": {
+          "rules": {}
+        },
+        "name": "empresa_ipt"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query_usuario",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "usuarios",
+                "column": "id_usuarios"
+              },
+              {
+                "table": "usuarios",
+                "column": "nome_completo"
+              },
+              {
+                "table": "usuarios",
+                "column": "cpf"
+              },
+              {
+                "table": "usuarios",
+                "column": "e-mail"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.cpf_ipt}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "usuarios"
+            },
+            "primary": "id_usuarios",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "usuarios.cpf",
+                  "field": "usuarios.cpf",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.cpf_ipt}}",
+                  "data": {
+                    "table": "usuarios",
+                    "column": "cpf",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": -5,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "cpf"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select \"id_usuarios\", \"nome_completo\", \"cpf\", \"e-mail\" from \"usuarios\" where \"usuarios\".\"cpf\" = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "id_usuarios"
+          },
+          {
+            "type": "text",
+            "name": "nome_completo"
+          },
+          {
+            "type": "text",
+            "name": "cpf"
+          },
+          {
+            "type": "text",
+            "name": "e-mail"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query_usuario.cpf==$_POST.cpf_ipt}}",
+          "then": {
+            "steps": [
+              {
+                "name": "query",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [
+                      {
+                        "table": "usuario_empresa",
+                        "column": "ref_empresa"
+                      },
+                      {
+                        "table": "usuario_empresa",
+                        "column": "ref_user"
+                      }
+                    ],
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{query_usuario.id_usuarios}}",
+                        "test": ""
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{$_POST.empresa_ipt}}",
+                        "test": ""
+                      }
+                    ],
+                    "table": {
+                      "name": "usuario_empresa"
+                    },
+                    "primary": "use_emp_id",
+                    "joins": [],
+                    "query": "select \"ref_empresa\", \"ref_user\" from \"usuario_empresa\" where \"usuario_empresa\".\"ref_user\" = ? and \"usuario_empresa\".\"ref_empresa\" = ?",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "usuario_empresa.ref_user",
+                          "field": "usuario_empresa.ref_user",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{query_usuario.id_usuarios}}",
+                          "data": {
+                            "table": "usuario_empresa",
+                            "column": "ref_user",
+                            "type": "text",
+                            "columnObj": {
+                              "type": "reference",
+                              "primary": false,
+                              "unique": false,
+                              "nullable": true,
+                              "references": "id_usuarios",
+                              "inTable": "usuarios",
+                              "referenceType": "uuid",
+                              "onUpdate": "NO ACTION",
+                              "onDelete": "NO ACTION",
+                              "name": "ref_user"
+                            }
+                          },
+                          "operation": "="
+                        },
+                        {
+                          "id": "usuario_empresa.ref_empresa",
+                          "field": "usuario_empresa.ref_empresa",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{$_POST.empresa_ipt}}",
+                          "data": {
+                            "table": "usuario_empresa",
+                            "column": "ref_empresa",
+                            "type": "text",
+                            "columnObj": {
+                              "type": "reference",
+                              "primary": false,
+                              "unique": false,
+                              "nullable": true,
+                              "references": "id",
+                              "inTable": "empresas",
+                              "referenceType": "uuid",
+                              "onUpdate": "NO ACTION",
+                              "onDelete": "NO ACTION",
+                              "name": "ref_empresa"
+                            }
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    }
+                  }
+                },
+                "output": true,
+                "meta": [
+                  {
+                    "type": "number",
+                    "name": "ref_empresa"
+                  },
+                  {
+                    "type": "number",
+                    "name": "ref_user"
+                  }
+                ],
+                "outputType": "object"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{query.ref_empresa==$_POST.empresa_ipt}}",
+                  "then": {
+                    "steps": {
+                      "name": "resposta",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "Usuario já cadastrado! Veja se ele está ativo na empresa escolhida.",
+                        "key": "resposta"
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    }
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "insert_relacionamento",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "usuario_empresa",
+                                "column": "ref_empresa",
+                                "type": "text",
+                                "value": "{{$_POST.empresa_ipt}}"
+                              },
+                              {
+                                "table": "usuario_empresa",
+                                "column": "ref_user",
+                                "type": "text",
+                                "value": "{{query_usuario.id_usuarios}}"
+                              },
+                              {
+                                "table": "usuario_empresa",
+                                "column": "status_use",
+                                "type": "text",
+                                "value": "{{'Ativo'}}"
+                              }
+                            ],
+                            "table": "usuario_empresa",
+                            "returning": "use_emp_id",
+                            "query": "insert into \"usuario_empresa\" (\"ref_empresa\", \"ref_user\", \"status_use\") values (?, ?, ?)",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{$_POST.empresa_ipt}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{query_usuario.id_usuarios}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{'Ativo'}}",
+                                "test": ""
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "resposta",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "Usuario adicionado a empresa escolhida.",
+                          "key": "resposta"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          },
+          "else": {
+            "steps": [
+              {
+                "name": "senha",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "key": "senha",
+                  "value": "@mudar123"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "hash",
+                "module": "crypto",
+                "action": "passwordHash",
+                "options": {
+                  "password": "{{senha}}"
+                },
+                "outputType": "text"
+              },
+              {
+                "name": "insert_usuario",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "usuarios",
+                        "column": "nome_completo",
+                        "type": "text",
+                        "value": "{{$_POST.nome_completo_ipt}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "cpf",
+                        "type": "text",
+                        "value": "{{$_POST.cpf_ipt}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "e-mail",
+                        "type": "text",
+                        "value": "{{$_POST.email_ipt}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "empresa_selecionada",
+                        "type": "text",
+                        "value": "{{$_POST.empresa_ipt}}"
+                      },
+                      {
+                        "table": "usuarios",
+                        "column": "password",
+                        "type": "text",
+                        "value": "{{hash}}"
+                      }
+                    ],
+                    "table": "usuarios",
+                    "returning": "id_usuarios",
+                    "query": "insert into \"usuarios\" (\"cpf\", \"e-mail\", \"empresa_selecionada\", \"nome_completo\", \"password\") values (?, ?, ?, ?, ?) returning \"id_usuarios\"",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{$_POST.nome_completo_ipt}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{$_POST.cpf_ipt}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{$_POST.email_ipt}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{$_POST.empresa_ipt}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{hash}}",
+                        "test": ""
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "insert_relacionamento_empresa",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "usuario_empresa",
+                        "column": "ref_empresa",
+                        "type": "text",
+                        "value": "{{$_POST.empresa_ipt}}"
+                      },
+                      {
+                        "table": "usuario_empresa",
+                        "column": "ref_user",
+                        "type": "text",
+                        "value": "{{insert_usuario.identity}}"
+                      },
+                      {
+                        "table": "usuario_empresa",
+                        "column": "status_use",
+                        "type": "text",
+                        "value": "{{'Ativo'}}"
+                      }
+                    ],
+                    "table": "usuario_empresa",
+                    "returning": "use_emp_id",
+                    "query": "insert into \"usuario_empresa\" (\"ref_empresa\", \"ref_user\", \"status_use\") values (?, ?, ?)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{$_POST.empresa_ipt}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{insert_usuario.identity}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{'Ativo'}}",
+                        "test": ""
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "resposta",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "Novo usuario cadastrado com sucesso!",
+                  "key": "resposta"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  },
+  "usedModules": {
+    "argon2": "^0.30.2"
+  }
+}

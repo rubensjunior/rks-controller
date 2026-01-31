@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query_usuarios",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "usuarios",
+              "column": "id_usuarios"
+            },
+            {
+              "table": "usuarios",
+              "column": "nome_completo"
+            },
+            {
+              "table": "usuarios",
+              "column": "cpf"
+            },
+            {
+              "table": "usuarios",
+              "column": "e-mail"
+            },
+            {
+              "table": "usuarios",
+              "column": "apelido"
+            },
+            {
+              "table": "usuarios",
+              "column": "empresa_selecionada"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "usuarios"
+          },
+          "primary": "id_usuarios",
+          "joins": [],
+          "query": "select \"id_usuarios\", \"nome_completo\", \"cpf\", \"e-mail\", \"apelido\", \"empresa_selecionada\" from \"usuarios\""
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "id_usuarios"
+            },
+            {
+              "type": "text",
+              "name": "nome_completo"
+            },
+            {
+              "type": "text",
+              "name": "cpf"
+            },
+            {
+              "type": "text",
+              "name": "e-mail"
+            },
+            {
+              "type": "text",
+              "name": "apelido"
+            },
+            {
+              "type": "number",
+              "name": "empresa_selecionada"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}
