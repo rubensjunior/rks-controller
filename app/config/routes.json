@@ -28,22 +28,22 @@
       "layout": "dashboard"
     },
     {
-      "path": "/adminClient/gastos/solicitacoes",
+      "path": "/in/security/backoffice/gastos/solicitacoes",
       "page": "adminClient/gastos/solicitacoes",
       "layout": "dashboard"
     },
     {
-      "path": "/adminClient/gastos/compromissos",
+      "path": "/in/security/backoffice/gastos/compromissos",
       "page": "adminClient/gastos/compromissos",
       "layout": "dashboard"
     },
     {
-      "path": "/adminClient/gastos/competencias",
+      "path": "/in/security/backoffice/gastos/competencias",
       "page": "adminClient/gastos/competencias",
       "layout": "dashboard"
     },
     {
-      "path": "/adminClient/gastos/pagamentos",
+      "path": "/in/security/backoffice/gastos/pagamentos",
       "page": "adminClient/gastos/pagamentos",
       "layout": "administrador"
     }
