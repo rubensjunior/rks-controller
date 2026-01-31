@@ -26,6 +26,31 @@
       "path": "/in/security/backoffice/",
       "page": "adminClient/inicial",
       "layout": "dashboard"
+    },
+    {
+      "path": "/adminClient/gastos/solicitacoes",
+      "page": "adminClient/gastos/solicitacoes",
+      "layout": "dashboard"
+    },
+    {
+      "path": "/adminClient/gastos/compromissos",
+      "page": "adminClient/gastos/compromissos",
+      "layout": "dashboard"
+    },
+    {
+      "path": "/adminClient/gastos/competencias",
+      "page": "adminClient/gastos/competencias",
+      "layout": "dashboard"
+    },
+    {
+      "path": "/adminClient/gastos/pagamentos",
+      "page": "adminClient/gastos/pagamentos",
+      "layout": "administrador"
     }
-  ]
+  ],
+  "layouts": {
+    "dashboard": {
+      "exec": "/api/backoffice/pagina-restrita"
+    }
+  }
 }

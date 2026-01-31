@@ -1,0 +1,18 @@
+{
+  "solicitacoes.ejs": {
+    "layoutPage": "dashboard",
+    "description": ""
+  },
+  "compromissos.ejs": {
+    "layoutPage": "dashboard",
+    "description": ""
+  },
+  "competencias.ejs": {
+    "layoutPage": "dashboard",
+    "description": ""
+  },
+  "pagamentos.ejs": {
+    "layoutPage": "administrador",
+    "description": ""
+  }
+}

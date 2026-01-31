@@ -1,0 +1,10 @@
+{
+  "name": "",
+  "module": "auth",
+  "action": "restrict",
+  "options": {
+    "provider": "autenticacao",
+    "loginUrl": "/",
+    "forbiddenUrl": "/"
+  }
+}

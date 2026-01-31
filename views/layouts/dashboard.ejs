@@ -13,10 +13,16 @@
   <link rel="stylesheet" href="/css/style.css" />
   <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
   <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+  <script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
+  <script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
 </head>
 
 <body is="dmx-app" id="dashboard" class="bg-backoffice">
-  <header class="bg-white py-3">
+  <div is="dmx-browser" id="navegacao"></div>
+  <dmx-notifications id="notificacoes"></dmx-notifications>
+  <dmx-serverconnect id="deslogar" noload="true" url="/api/cliente/logout"></dmx-serverconnect>
+  <header class="bg-white py-3 mb-3">
     <div class="container">
       <div class="row align-items-center">
         <div class="col">
@@ -24,36 +30,31 @@
         </div>
 
         <div class="col">
-          <div class="nav w-100 justify-content-end">
+          <div class="nav w-100 justify-content-end gap-3">
 
-            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown1" role="button" aria-haspopup="true" aria-expanded="false">Gastos</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown1">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle text-black" data-bs-toggle="dropdown" href="#" id="dropdown1" role="button" aria-haspopup="true" aria-expanded="false">Gastos</a>
+              <div class="dropdown-menu mt-3" aria-labelledby="dropdown1">
+                <a class="dropdown-item" href="#">Solicitações</a>
+                <a class="dropdown-item" href="#">Compromissos</a>
+                <a class="dropdown-item" href="#">Competência (orçamentos)</a>
+                <a class="dropdown-item" href="#">Pagamentos</a>
               </div>
             </div>
-            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown2" role="button" aria-haspopup="true" aria-expanded="false">Projetos</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown2">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+            <a class="nav-item nav-link text-black" href="#">Projetos</a>
+            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle text-black" data-bs-toggle="dropdown" href="#" id="dropdown3" role="button" aria-haspopup="true" aria-expanded="false">Cadastros</a>
+              <div class="dropdown-menu mt-3" aria-labelledby="dropdown3">
+                <a class="dropdown-item" href="#">Departamentos</a>
+                <a class="dropdown-item" href="#">Fornecedores</a>
+                <a class="dropdown-item" href="#">Fontes de Financiamento</a>
               </div>
             </div>
-            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown3" role="button" aria-haspopup="true" aria-expanded="false">Cadastros</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown3">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle text-black" data-bs-toggle="dropdown" href="#" id="dropdown4" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
+              <div class="dropdown-menu mt-3" aria-labelledby="dropdown4">
+                <a class="dropdown-item" href="#">Usuarios e Acessos</a>
+                <a class="dropdown-item" href="#">Perfil da Empresa</a>
+                <a class="dropdown-item" href="#">Preferências</a>
               </div>
-            </div>
-            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown4" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown4">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </div><a class="nav-item nav-link" href="#">Sair</a>
+            </div><a class="nav-item nav-link text-black" href="#" dmx-on:click="run([{run:{outputType:'text',action:`deslogar.load({},true)`}},{wait:{delay:500}},{run:{outputType:'text',action:`navegacao.reload()`}}])">Sair</a>
           </div>
         </div>
       </div>
