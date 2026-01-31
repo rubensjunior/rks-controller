@@ -1,0 +1,120 @@
+[
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "autenticacao"
+    },
+    "output": true,
+    "meta": []
+  },
+  {
+    "name": "query_usuario",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "usuarios",
+            "column": "id_usuarios"
+          },
+          {
+            "table": "usuarios",
+            "column": "nome_completo"
+          },
+          {
+            "table": "usuarios",
+            "column": "cpf"
+          },
+          {
+            "table": "usuarios",
+            "column": "e-mail"
+          },
+          {
+            "table": "usuarios",
+            "column": "apelido"
+          },
+          {
+            "table": "usuarios",
+            "column": "empresa_selecionada"
+          }
+        ],
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{identity}}",
+            "test": ""
+          }
+        ],
+        "table": {
+          "name": "usuarios"
+        },
+        "primary": "id_usuarios",
+        "joins": [],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "usuarios.id_usuarios",
+              "field": "usuarios.id_usuarios",
+              "type": "string",
+              "operator": "equal",
+              "value": "{{identity}}",
+              "data": {
+                "table": "usuarios",
+                "column": "id_usuarios",
+                "type": "text",
+                "columnObj": {
+                  "type": "uuid",
+                  "default": "gen_random_uuid()",
+                  "primary": true,
+                  "unique": true,
+                  "nullable": false,
+                  "name": "id_usuarios"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        },
+        "query": "select \"id_usuarios\", \"nome_completo\", \"cpf\", \"e-mail\", \"apelido\", \"empresa_selecionada\" from \"usuarios\" where \"usuarios\".\"id_usuarios\" = ?"
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "text",
+        "name": "id_usuarios"
+      },
+      {
+        "type": "text",
+        "name": "nome_completo"
+      },
+      {
+        "type": "text",
+        "name": "cpf"
+      },
+      {
+        "type": "text",
+        "name": "e-mail"
+      },
+      {
+        "type": "text",
+        "name": "apelido"
+      },
+      {
+        "type": "number",
+        "name": "empresa_selecionada"
+      }
+    ],
+    "outputType": "object"
+  }
+]
