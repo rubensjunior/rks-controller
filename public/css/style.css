@@ -27,3 +27,6 @@
   position: relative;
   z-index: 2;
 }
+.bg-backoffice{
+  background-color: #F1F4F7;
+}
