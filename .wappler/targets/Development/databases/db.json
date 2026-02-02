@@ -568,6 +568,56 @@
       "departamentos": {
         "db": {
           "schema": "public"
+        },
+        "columns": {
+          "dep_id": {
+            "db": {
+              "type": "bigIncrements",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "created_at": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "empresa_dep_ref": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "empresas",
+              "referenceType": "uuid",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "nome_departamento": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "descricao_departamento": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
         }
       }
     },
