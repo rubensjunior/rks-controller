@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "id_empresa"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "departamentos",
+              "column": "dep_id"
+            },
+            {
+              "table": "departamentos",
+              "column": "created_at"
+            },
+            {
+              "table": "departamentos",
+              "column": "empresa_dep_ref"
+            },
+            {
+              "table": "departamentos",
+              "column": "nome_departamento"
+            },
+            {
+              "table": "departamentos",
+              "column": "descricao_departamento"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.id_empresa}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "departamentos"
+          },
+          "primary": "dep_id",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "departamentos.empresa_dep_ref",
+                "field": "departamentos.empresa_dep_ref",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.id_empresa}}",
+                "data": {
+                  "table": "departamentos",
+                  "column": "empresa_dep_ref",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "references": "id",
+                    "inTable": "empresas",
+                    "referenceType": "uuid",
+                    "onUpdate": "NO ACTION",
+                    "onDelete": "NO ACTION",
+                    "name": "empresa_dep_ref"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select \"dep_id\", \"created_at\", \"empresa_dep_ref\", \"nome_departamento\", \"descricao_departamento\" from \"departamentos\" where \"departamentos\".\"empresa_dep_ref\" = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "text",
+          "name": "dep_id"
+        },
+        {
+          "type": "datetime",
+          "name": "created_at"
+        },
+        {
+          "type": "number",
+          "name": "empresa_dep_ref"
+        },
+        {
+          "type": "text",
+          "name": "nome_departamento"
+        },
+        {
+          "type": "text",
+          "name": "descricao_departamento"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}
