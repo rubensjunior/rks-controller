@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "nome_departamento_ipt",
+        "name": "nome_departamento_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "descricao_departamento_ipt",
+        "name": "descricao_departamento_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "empresa_dep_ref",
+        "name": "empresa_dep_ref"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert_departamento",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "departamentos",
+              "column": "empresa_dep_ref",
+              "type": "text",
+              "value": "{{$_POST.empresa_dep_ref}}"
+            },
+            {
+              "table": "departamentos",
+              "column": "nome_departamento",
+              "type": "text",
+              "value": "{{$_POST.nome_departamento_ipt}}"
+            },
+            {
+              "table": "departamentos",
+              "column": "descricao_departamento",
+              "type": "text",
+              "value": "{{$_POST.descricao_departamento_ipt}}"
+            }
+          ],
+          "table": "departamentos",
+          "returning": "dep_id",
+          "query": "insert into \"departamentos\" (\"descricao_departamento\", \"empresa_dep_ref\", \"nome_departamento\") values (?, ?, ?) returning \"dep_id\"",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.empresa_dep_ref}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.nome_departamento_ipt}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.descricao_departamento_ipt}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

@@ -37,6 +37,14 @@
             {
               "table": "usuarios",
               "column": "apelido"
+            },
+            {
+              "table": "usuarios",
+              "column": "empresa_selecionada"
+            },
+            {
+              "table": "usuarios",
+              "column": "super_admin"
             }
           ],
           "params": [
@@ -81,7 +89,7 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select \"id_usuarios\", \"nome_completo\", \"cpf\", \"e-mail\", \"apelido\" from \"usuarios\" where \"usuarios\".\"id_usuarios\" = ?"
+          "query": "select \"id_usuarios\", \"nome_completo\", \"cpf\", \"e-mail\", \"apelido\", \"empresa_selecionada\", \"super_admin\" from \"usuarios\" where \"usuarios\".\"id_usuarios\" = ?"
         }
       },
       "output": true,
@@ -105,6 +113,14 @@
         {
           "type": "text",
           "name": "apelido"
+        },
+        {
+          "type": "number",
+          "name": "empresa_selecionada"
+        },
+        {
+          "type": "text",
+          "name": "super_admin"
         }
       ],
       "outputType": "object"

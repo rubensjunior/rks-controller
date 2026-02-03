@@ -612,10 +612,16 @@
           },
           "descricao_departamento": {
             "db": {
-              "type": "text",
+              "type": "reference",
               "primary": false,
               "unique": false,
-              "nullable": true
+              "nullable": true,
+              "default": "gen_random_uuid()",
+              "references": "id",
+              "inTable": "empresas",
+              "referenceType": "uuid",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
             }
           }
         }
