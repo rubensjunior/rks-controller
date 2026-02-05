@@ -92,7 +92,14 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select \"dep_id\", \"created_at\", \"empresa_dep_ref\", \"nome_departamento\", \"descricao_departamento\" from \"departamentos\" where \"departamentos\".\"empresa_dep_ref\" = ?"
+          "query": "select \"dep_id\", \"created_at\", \"empresa_dep_ref\", \"nome_departamento\", \"descricao_departamento\" from \"departamentos\" where \"departamentos\".\"empresa_dep_ref\" = ? order by \"nome_departamento\" ASC",
+          "orders": [
+            {
+              "table": "departamentos",
+              "column": "nome_departamento",
+              "direction": "ASC"
+            }
+          ]
         }
       },
       "output": true,

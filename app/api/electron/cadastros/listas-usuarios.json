@@ -1,0 +1,209 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "id_empresa"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query_usuarios",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "usuarios",
+              "column": "id_usuarios"
+            },
+            {
+              "table": "usuarios",
+              "column": "nome_completo"
+            },
+            {
+              "table": "usuarios",
+              "column": "cpf"
+            },
+            {
+              "table": "usuarios",
+              "column": "e-mail"
+            },
+            {
+              "table": "usuarios",
+              "column": "apelido"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.id_empresa}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "usuario_empresa"
+          },
+          "primary": "use_emp_id",
+          "joins": [
+            {
+              "table": "usuarios",
+              "column": "*",
+              "type": "INNER",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "usuarios",
+                    "column": "id_usuarios",
+                    "operation": "=",
+                    "operator": "equal",
+                    "value": {
+                      "table": "usuario_empresa",
+                      "column": "ref_user",
+                      "type": "text"
+                    }
+                  }
+                ]
+              },
+              "primary": "id_usuarios"
+            }
+          ],
+          "query": "select \"usuarios\".\"id_usuarios\", \"usuarios\".\"nome_completo\", \"usuarios\".\"cpf\", \"usuarios\".\"e-mail\", \"usuarios\".\"apelido\" from \"usuario_empresa\" inner join \"usuarios\" on \"usuarios\".\"id_usuarios\" = \"usuario_empresa\".\"ref_user\" where \"usuario_empresa\".\"ref_empresa\" = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "usuario_empresa.ref_empresa",
+                "field": "usuario_empresa.ref_empresa",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.id_empresa}}",
+                "data": {
+                  "table": "usuario_empresa",
+                  "column": "ref_empresa",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "references": "id",
+                    "inTable": "empresas",
+                    "referenceType": "uuid",
+                    "onUpdate": "NO ACTION",
+                    "onDelete": "NO ACTION",
+                    "name": "ref_empresa"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "id_usuarios"
+            },
+            {
+              "type": "text",
+              "name": "nome_completo"
+            },
+            {
+              "type": "text",
+              "name": "cpf"
+            },
+            {
+              "type": "text",
+              "name": "e-mail"
+            },
+            {
+              "type": "text",
+              "name": "apelido"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

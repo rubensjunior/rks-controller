@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "editar_nome_departamento_ipt",
+        "name": "editar_nome_departamento_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "id_departamento",
+        "name": "id_departamento"
+      },
+      {
+        "type": "text",
+        "fieldName": "editar_descricao_departamento_ipt",
+        "name": "editar_descricao_departamento_ipt"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update_departamento",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "departamentos",
+              "column": "nome_departamento",
+              "type": "text",
+              "value": "{{$_POST.editar_nome_departamento_ipt}}"
+            },
+            {
+              "table": "departamentos",
+              "column": "descricao_departamento",
+              "type": "text",
+              "value": "{{$_POST.editar_descricao_departamento_ipt}}"
+            }
+          ],
+          "table": "departamentos",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "dep_id",
+                "field": "dep_id",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_POST.id_departamento}}",
+                "data": {
+                  "column": "dep_id"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "dep_id",
+          "query": "update \"departamentos\" set \"nome_departamento\" = ?, \"descricao_departamento\" = ? where \"dep_id\" = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.editar_nome_departamento_ipt}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.editar_descricao_departamento_ipt}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P3",
+              "value": "{{$_POST.id_departamento}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
