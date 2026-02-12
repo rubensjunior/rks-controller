@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "nome_edit_completo_ipt",
+        "name": "nome_edit_completo_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "usuario_edit_ipt",
+        "name": "usuario_edit_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "cpf_edit_ipt",
+        "name": "cpf_edit_ipt"
+      },
+      {
+        "type": "text",
+        "fieldName": "email_edit_ipt",
+        "name": "email_edit_ipt"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update_usuario",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "usuarios",
+              "column": "nome_completo",
+              "type": "text",
+              "value": "{{$_POST.nome_edit_completo_ipt}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "cpf",
+              "type": "text",
+              "value": "{{$_POST.cpf_edit_ipt}}"
+            },
+            {
+              "table": "usuarios",
+              "column": "e-mail",
+              "type": "text",
+              "value": "{{$_POST.email_edit_ipt}}"
+            }
+          ],
+          "table": "usuarios",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id_usuarios",
+                "field": "id_usuarios",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_POST.usuario_edit_ipt}}",
+                "data": {
+                  "column": "id_usuarios"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "id_usuarios",
+          "query": "update \"usuarios\" set \"nome_completo\" = ?, \"cpf\" = ?, \"e-mail\" = ? where \"id_usuarios\" = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.nome_edit_completo_ipt}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.cpf_edit_ipt}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.email_edit_ipt}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P4",
+              "value": "{{$_POST.usuario_edit_ipt}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
