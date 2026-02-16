@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "id_usuario"
+      },
+      {
+        "type": "text",
+        "name": "id_empresa"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update_usuario",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "usuario_empresa",
+              "column": "status_use",
+              "type": "text",
+              "value": "{{Inativo}}"
+            }
+          ],
+          "table": "usuario_empresa",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "ref_empresa",
+                "field": "ref_empresa",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.id_empresa}}",
+                "data": {
+                  "column": "ref_empresa"
+                },
+                "operation": "="
+              },
+              {
+                "id": "ref_user",
+                "field": "ref_user",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.id_usuario}}",
+                "data": {
+                  "column": "ref_user"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "use_emp_id",
+          "query": "update \"usuario_empresa\" set \"status_use\" = ? where \"ref_empresa\" = ? and \"ref_user\" = ? returning \"use_emp_id\"",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{Inativo}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_GET.id_empresa}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P3",
+              "value": "{{$_GET.id_usuario}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
