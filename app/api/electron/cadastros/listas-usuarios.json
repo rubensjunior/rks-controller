@@ -52,6 +52,14 @@
             {
               "table": "usuarios",
               "column": "apelido"
+            },
+            {
+              "table": "usuario_empresa",
+              "column": "status_use"
+            },
+            {
+              "table": "usuarios",
+              "column": "super_admin"
             }
           ],
           "params": [
@@ -91,7 +99,7 @@
               "primary": "id_usuarios"
             }
           ],
-          "query": "select \"usuarios\".\"id_usuarios\", \"usuarios\".\"nome_completo\", \"usuarios\".\"cpf\", \"usuarios\".\"e-mail\", \"usuarios\".\"apelido\" from \"usuario_empresa\" inner join \"usuarios\" on \"usuarios\".\"id_usuarios\" = \"usuario_empresa\".\"ref_user\" where \"usuario_empresa\".\"ref_empresa\" = ?",
+          "query": "select \"usuarios\".\"id_usuarios\", \"usuarios\".\"nome_completo\", \"usuarios\".\"cpf\", \"usuarios\".\"e-mail\", \"usuarios\".\"apelido\", \"usuario_empresa\".\"status_use\", \"usuarios\".\"super_admin\" from \"usuario_empresa\" inner join \"usuarios\" on \"usuarios\".\"id_usuarios\" = \"usuario_empresa\".\"ref_user\" where \"usuario_empresa\".\"ref_empresa\" = ?",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -199,6 +207,14 @@
             {
               "type": "text",
               "name": "apelido"
+            },
+            {
+              "type": "text",
+              "name": "status_use"
+            },
+            {
+              "type": "text",
+              "name": "super_admin"
             }
           ]
         }

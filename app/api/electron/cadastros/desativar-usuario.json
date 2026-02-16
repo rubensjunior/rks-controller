@@ -13,7 +13,7 @@
   },
   "exec": {
     "steps": {
-      "name": "update_usuario",
+      "name": "update",
       "module": "dbupdater",
       "action": "update",
       "options": {
@@ -25,7 +25,7 @@
               "table": "usuario_empresa",
               "column": "status_use",
               "type": "text",
-              "value": "{{Inativo}}"
+              "value": "{{'Inativo'}}"
             }
           ],
           "table": "usuario_empresa",
@@ -64,7 +64,7 @@
             {
               "name": ":P1",
               "type": "expression",
-              "value": "{{Inativo}}",
+              "value": "{{'Inativo'}}",
               "test": ""
             },
             {

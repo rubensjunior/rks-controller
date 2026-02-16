@@ -169,15 +169,6 @@
           "comment": "auth: stores authenticator method reference claims for multi factor authentication"
         }
       },
-      "auth.flow_state": {
-        "db": {
-          "schema": "auth",
-          "comment": "stores metadata for pkce logins"
-        },
-        "refs": {
-          "auth.saml_relay_states": "flow_state_id"
-        }
-      },
       "auth.identities": {
         "db": {
           "schema": "auth",
@@ -220,6 +211,15 @@
           "comment": "Stores OAuth states for third-party provider authentication flows where Supabase acts as the OAuth client."
         }
       },
+      "auth.flow_state": {
+        "db": {
+          "schema": "auth",
+          "comment": "Stores metadata for all OAuth/SSO login flows"
+        },
+        "refs": {
+          "auth.saml_relay_states": "flow_state_id"
+        }
+      },
       "storage.buckets": {
         "db": {
           "schema": "storage"
@@ -227,7 +227,6 @@
         "refs": {
           "storage.s3_multipart_uploads": "bucket_id",
           "storage.s3_multipart_uploads_parts": "bucket_id",
-          "storage.prefixes": "bucket_id",
           "storage.objects": "bucket_id"
         }
       },
@@ -257,11 +256,6 @@
           "schema": "storage"
         },
         "parent": "s3_multipart_uploads"
-      },
-      "storage.prefixes": {
-        "db": {
-          "schema": "storage"
-        }
       },
       "storage.vector_indexes": {
         "db": {
@@ -404,6 +398,7 @@
         },
         "refs": {
           "usuarios": "empresa_selecionada",
+          "departamento_membro": "ref_empresa_memb",
           "usuario_empresa": "ref_empresa",
           "departamentos": "empresa_dep_ref"
         }
@@ -500,9 +495,85 @@
             }
           }
         },
+        "refs": {
+          "departamento_membro": "ref_usu_memb"
+        },
         "sub": {
           "usuario_empresa": "ref_user"
         }
+      },
+      "departamento_membro": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id_dep_memb": {
+            "db": {
+              "type": "bigIncrements",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "dep_memb_created_at": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "ref_empresa_memb": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "empresas",
+              "referenceType": "uuid",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "ref_depart_memb": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "dep_id",
+              "inTable": "departamentos",
+              "referenceType": "bigInteger",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "ref_usu_memb": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id_usuarios",
+              "inTable": "usuarios",
+              "referenceType": "uuid",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "status_memb": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "parent": "departamentos"
       },
       "usuario_empresa": {
         "db": {
@@ -620,15 +691,13 @@
               "referenceType": "uuid"
             }
           }
+        },
+        "sub": {
+          "departamento_membro": "ref_depart_memb"
         }
       }
     },
     "views": {
-      "vault.decrypted_secrets": {
-        "db": {
-          "schema": "vault"
-        }
-      },
       "extensions.pg_stat_statements_info": {
         "db": {
           "schema": "extensions"
@@ -637,6 +706,11 @@
       "extensions.pg_stat_statements": {
         "db": {
           "schema": "extensions"
+        }
+      },
+      "vault.decrypted_secrets": {
+        "db": {
+          "schema": "vault"
         }
       }
     },
