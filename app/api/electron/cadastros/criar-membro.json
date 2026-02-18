@@ -1,3 +1,99 @@
 {
-  "exec": {}
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "id_departamento",
+        "name": "id_departamento"
+      },
+      {
+        "type": "text",
+        "fieldName": "id_empresa",
+        "name": "id_empresa"
+      },
+      {
+        "type": "text",
+        "fieldName": "select_membro",
+        "name": "select_membro"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert_membro",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "departamento_membro",
+              "column": "ref_empresa_memb",
+              "type": "text",
+              "value": "{{$_POST.id_empresa}}"
+            },
+            {
+              "table": "departamento_membro",
+              "column": "ref_depart_memb",
+              "type": "number",
+              "value": "{{$_POST.id_departamento}}"
+            },
+            {
+              "table": "departamento_membro",
+              "column": "ref_usu_memb",
+              "type": "text",
+              "value": "{{$_POST.select_membro}}"
+            },
+            {
+              "table": "departamento_membro",
+              "column": "status_memb",
+              "type": "text",
+              "value": "{{'Ativo'}}"
+            }
+          ],
+          "table": "departamento_membro",
+          "returning": "id_dep_memb",
+          "query": "insert into \"departamento_membro\" (\"ref_depart_memb\", \"ref_empresa_memb\", \"ref_usu_memb\", \"status_memb\") values (?, ?, ?, ?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.id_empresa}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.id_departamento}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.select_membro}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{'Ativo'}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
 }
