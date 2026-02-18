@@ -19,81 +19,278 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "insert_membro",
-      "module": "dbupdater",
-      "action": "insert",
-      "options": {
-        "connection": "db",
-        "sql": {
-          "type": "insert",
-          "values": [
-            {
-              "table": "departamento_membro",
-              "column": "ref_empresa_memb",
-              "type": "text",
-              "value": "{{$_POST.id_empresa}}"
+    "steps": [
+      {
+        "name": "query_verificar_membro",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "departamento_membro",
+                "column": "*"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.id_departamento}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_POST.id_empresa}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_POST.select_membro}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "departamento_membro"
             },
-            {
-              "table": "departamento_membro",
-              "column": "ref_depart_memb",
-              "type": "number",
-              "value": "{{$_POST.id_departamento}}"
+            "primary": "id_dep_memb",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "departamento_membro.ref_depart_memb",
+                  "field": "departamento_membro.ref_depart_memb",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.id_departamento}}",
+                  "data": {
+                    "table": "departamento_membro",
+                    "column": "ref_depart_memb",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "references": "dep_id",
+                      "inTable": "departamentos",
+                      "referenceType": "bigInteger",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "ref_depart_memb"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "departamento_membro.ref_empresa_memb",
+                  "field": "departamento_membro.ref_empresa_memb",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.id_empresa}}",
+                  "data": {
+                    "table": "departamento_membro",
+                    "column": "ref_empresa_memb",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "references": "id",
+                      "inTable": "empresas",
+                      "referenceType": "uuid",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "ref_empresa_memb"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "departamento_membro.ref_usu_memb",
+                  "field": "departamento_membro.ref_usu_memb",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.select_membro}}",
+                  "data": {
+                    "table": "departamento_membro",
+                    "column": "ref_usu_memb",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "references": "id_usuarios",
+                      "inTable": "usuarios",
+                      "referenceType": "uuid",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "ref_usu_memb"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
             },
-            {
-              "table": "departamento_membro",
-              "column": "ref_usu_memb",
-              "type": "text",
-              "value": "{{$_POST.select_membro}}"
-            },
-            {
-              "table": "departamento_membro",
-              "column": "status_memb",
-              "type": "text",
-              "value": "{{'Ativo'}}"
-            }
-          ],
-          "table": "departamento_membro",
-          "returning": "id_dep_memb",
-          "query": "insert into \"departamento_membro\" (\"ref_depart_memb\", \"ref_empresa_memb\", \"ref_usu_memb\", \"status_memb\") values (?, ?, ?, ?)",
-          "params": [
-            {
-              "name": ":P1",
-              "type": "expression",
-              "value": "{{$_POST.id_empresa}}",
-              "test": ""
-            },
-            {
-              "name": ":P2",
-              "type": "expression",
-              "value": "{{$_POST.id_departamento}}",
-              "test": ""
-            },
-            {
-              "name": ":P3",
-              "type": "expression",
-              "value": "{{$_POST.select_membro}}",
-              "test": ""
-            },
-            {
-              "name": ":P4",
-              "type": "expression",
-              "value": "{{'Ativo'}}",
-              "test": ""
-            }
-          ]
-        }
-      },
-      "meta": [
-        {
-          "name": "identity",
-          "type": "text"
+            "query": "select * from \"departamento_membro\" where \"departamento_membro\".\"ref_depart_memb\" = ? and \"departamento_membro\".\"ref_empresa_memb\" = ? and \"departamento_membro\".\"ref_usu_memb\" = ?"
+          }
         },
-        {
-          "name": "affected",
-          "type": "number"
-        }
-      ]
-    }
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "id_dep_memb"
+          },
+          {
+            "type": "datetime",
+            "name": "dep_memb_created_at"
+          },
+          {
+            "type": "number",
+            "name": "ref_empresa_memb"
+          },
+          {
+            "type": "number",
+            "name": "ref_depart_memb"
+          },
+          {
+            "type": "number",
+            "name": "ref_usu_memb"
+          },
+          {
+            "type": "text",
+            "name": "status_memb"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query_verificar_membro.ref_usu_memb==$_POST.select_membro}}",
+          "then": {
+            "steps": {
+              "name": "resposta",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "Este membro já está cadastrado.",
+                "key": "resposta"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            }
+          },
+          "else": {
+            "steps": [
+              {
+                "name": "insert_membro",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "departamento_membro",
+                        "column": "ref_empresa_memb",
+                        "type": "text",
+                        "value": "{{$_POST.id_empresa}}"
+                      },
+                      {
+                        "table": "departamento_membro",
+                        "column": "ref_depart_memb",
+                        "type": "number",
+                        "value": "{{$_POST.id_departamento}}"
+                      },
+                      {
+                        "table": "departamento_membro",
+                        "column": "ref_usu_memb",
+                        "type": "text",
+                        "value": "{{$_POST.select_membro}}"
+                      },
+                      {
+                        "table": "departamento_membro",
+                        "column": "status_memb",
+                        "type": "text",
+                        "value": "{{'Ativo'}}"
+                      }
+                    ],
+                    "table": "departamento_membro",
+                    "returning": "id_dep_memb",
+                    "query": "insert into \"departamento_membro\" (\"ref_depart_memb\", \"ref_empresa_memb\", \"ref_usu_memb\", \"status_memb\") values (?, ?, ?, ?)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{$_POST.id_empresa}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{$_POST.id_departamento}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{$_POST.select_membro}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{'Ativo'}}",
+                        "test": ""
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "resposta",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "key": "resposta",
+                  "value": "Membro adicionado com sucesso ao departamento."
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
   }
 }
