@@ -1,0 +1,209 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "id_departamento"
+      },
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query_membros",
+      "module": "dbconnector",
+      "action": "paged",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "departamento_membro",
+              "column": "ref_empresa_memb"
+            },
+            {
+              "table": "departamento_membro",
+              "column": "ref_depart_memb"
+            },
+            {
+              "table": "usuarios",
+              "column": "nome_completo"
+            },
+            {
+              "table": "usuarios",
+              "column": "apelido"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.id_departamento}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "departamento_membro"
+          },
+          "primary": "id_dep_memb",
+          "joins": [
+            {
+              "table": "usuarios",
+              "column": "*",
+              "type": "INNER",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "usuarios",
+                    "column": "id_usuarios",
+                    "operation": "=",
+                    "operator": "equal",
+                    "value": {
+                      "table": "departamento_membro",
+                      "column": "ref_usu_memb",
+                      "type": "text"
+                    }
+                  }
+                ]
+              },
+              "primary": "id_usuarios"
+            }
+          ],
+          "query": "select \"departamento_membro\".\"ref_empresa_memb\", \"departamento_membro\".\"ref_depart_memb\", \"usuarios\".\"nome_completo\", \"usuarios\".\"apelido\" from \"departamento_membro\" inner join \"usuarios\" on \"usuarios\".\"id_usuarios\" = \"departamento_membro\".\"ref_usu_memb\" where \"departamento_membro\".\"ref_depart_memb\" = ? order by \"usuarios\".\"nome_completo\" ASC",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "departamento_membro.ref_depart_memb",
+                "field": "departamento_membro.ref_depart_memb",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.id_departamento}}",
+                "data": {
+                  "table": "departamento_membro",
+                  "column": "ref_depart_memb",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "references": "dep_id",
+                    "inTable": "departamentos",
+                    "referenceType": "bigInteger",
+                    "onUpdate": "NO ACTION",
+                    "onDelete": "NO ACTION",
+                    "name": "ref_depart_memb"
+                  }
+                },
+                "operation": "=",
+                "table": "departamento_membro"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "orders": [
+            {
+              "table": "usuarios",
+              "column": "nome_completo",
+              "direction": "ASC"
+            }
+          ]
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "name": "offset",
+          "type": "number"
+        },
+        {
+          "name": "limit",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "type": "object",
+          "sub": [
+            {
+              "name": "offset",
+              "type": "object",
+              "sub": [
+                {
+                  "name": "first",
+                  "type": "number"
+                },
+                {
+                  "name": "prev",
+                  "type": "number"
+                },
+                {
+                  "name": "next",
+                  "type": "number"
+                },
+                {
+                  "name": "last",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "current",
+              "type": "number"
+            },
+            {
+              "name": "total",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "name": "data",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "ref_empresa_memb"
+            },
+            {
+              "type": "number",
+              "name": "ref_depart_memb"
+            },
+            {
+              "type": "text",
+              "name": "nome_completo"
+            },
+            {
+              "type": "text",
+              "name": "apelido"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}
