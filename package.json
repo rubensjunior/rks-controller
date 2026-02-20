@@ -38,7 +38,8 @@
     "unzipper": "^0.12.1",
     "uuid": "^10.0.0",
     "pg": "^8.7.1",
-    "argon2": "^0.40.3"
+    "argon2": "^0.40.3",
+    "jsonpath": "^1.1.1"
   },
   "nodemonConfig": {
     "watch": [
