@@ -35,6 +35,10 @@
           "columns": [
             {
               "table": "departamento_membro",
+              "column": "id_dep_memb"
+            },
+            {
+              "table": "departamento_membro",
               "column": "ref_empresa_memb"
             },
             {
@@ -48,6 +52,10 @@
             {
               "table": "usuarios",
               "column": "apelido"
+            },
+            {
+              "table": "departamento_membro",
+              "column": "status_memb"
             }
           ],
           "params": [
@@ -56,6 +64,13 @@
               "type": "expression",
               "name": ":P1",
               "value": "{{$_GET.id_departamento}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{'Ativo'}}",
               "test": ""
             }
           ],
@@ -87,7 +102,7 @@
               "primary": "id_usuarios"
             }
           ],
-          "query": "select \"departamento_membro\".\"ref_empresa_memb\", \"departamento_membro\".\"ref_depart_memb\", \"usuarios\".\"nome_completo\", \"usuarios\".\"apelido\" from \"departamento_membro\" inner join \"usuarios\" on \"usuarios\".\"id_usuarios\" = \"departamento_membro\".\"ref_usu_memb\" where \"departamento_membro\".\"ref_depart_memb\" = ? order by \"usuarios\".\"nome_completo\" ASC",
+          "query": "select \"departamento_membro\".\"id_dep_memb\", \"departamento_membro\".\"ref_empresa_memb\", \"departamento_membro\".\"ref_depart_memb\", \"usuarios\".\"nome_completo\", \"usuarios\".\"apelido\", \"departamento_membro\".\"status_memb\" from \"departamento_membro\" inner join \"usuarios\" on \"usuarios\".\"id_usuarios\" = \"departamento_membro\".\"ref_usu_memb\" where \"departamento_membro\".\"ref_depart_memb\" = ? and \"departamento_membro\".\"status_memb\" = ? order by \"usuarios\".\"nome_completo\" ASC",
           "wheres": {
             "condition": "AND",
             "rules": [
@@ -114,8 +129,27 @@
                     "name": "ref_depart_memb"
                   }
                 },
-                "operation": "=",
-                "table": "departamento_membro"
+                "operation": "="
+              },
+              {
+                "id": "departamento_membro.status_memb",
+                "field": "departamento_membro.status_memb",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{'Ativo'}}",
+                "data": {
+                  "table": "departamento_membro",
+                  "column": "status_memb",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "text",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "status_memb"
+                  }
+                },
+                "operation": "="
               }
             ],
             "conditional": null,
@@ -125,7 +159,8 @@
             {
               "table": "usuarios",
               "column": "nome_completo",
-              "direction": "ASC"
+              "direction": "ASC",
+              "recid": 1
             }
           ]
         }
@@ -185,6 +220,10 @@
           "type": "array",
           "sub": [
             {
+              "type": "text",
+              "name": "id_dep_memb"
+            },
+            {
               "type": "number",
               "name": "ref_empresa_memb"
             },
@@ -199,6 +238,10 @@
             {
               "type": "text",
               "name": "apelido"
+            },
+            {
+              "type": "text",
+              "name": "status_memb"
             }
           ]
         }

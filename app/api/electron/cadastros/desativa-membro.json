@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "id_membro"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update_membro",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "departamento_membro",
+              "column": "status_memb",
+              "type": "text",
+              "value": "{{'Inativo'}}"
+            }
+          ],
+          "table": "departamento_membro",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "id_dep_memb",
+                "field": "id_dep_memb",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.id_membro}}",
+                "data": {
+                  "column": "id_dep_memb"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "id_dep_memb",
+          "query": "update \"departamento_membro\" set \"status_memb\" = ? where \"id_dep_memb\" = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{'Inativo'}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_GET.id_membro}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
