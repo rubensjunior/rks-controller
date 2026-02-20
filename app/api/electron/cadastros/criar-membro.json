@@ -184,16 +184,104 @@
           "if": "{{query_verificar_membro.ref_usu_memb==$_POST.select_membro}}",
           "then": {
             "steps": {
-              "name": "resposta",
+              "name": "",
               "module": "core",
-              "action": "setvalue",
+              "action": "condition",
               "options": {
-                "value": "Este membro já está cadastrado.",
-                "key": "resposta"
+                "if": "{{query_verificar_membro.status_memb=='Inativo'}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "update_membro",
+                      "module": "dbupdater",
+                      "action": "update",
+                      "options": {
+                        "connection": "db",
+                        "sql": {
+                          "type": "update",
+                          "values": [
+                            {
+                              "table": "departamento_membro",
+                              "column": "status_memb",
+                              "type": "text",
+                              "value": "{{'Ativo'}}"
+                            }
+                          ],
+                          "table": "departamento_membro",
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "id_dep_memb",
+                                "field": "id_dep_memb",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "{{query_verificar_membro.id_dep_memb}}",
+                                "data": {
+                                  "column": "id_dep_memb"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "returning": "id_dep_memb",
+                          "query": "update \"departamento_membro\" set \"status_memb\" = ? where \"id_dep_memb\" = ?",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{'Ativo'}}",
+                              "test": ""
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P2",
+                              "value": "{{query_verificar_membro.id_dep_memb}}",
+                              "test": ""
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "resposta",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "key": "resposta",
+                        "value": "Membro adicionado com sucesso ao departamento."
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "resposta",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "Este membro já está cadastrado.",
+                      "key": "resposta"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
+                  }
+                }
               },
-              "meta": [],
-              "outputType": "text",
-              "output": true
+              "outputType": "boolean"
             }
           },
           "else": {
