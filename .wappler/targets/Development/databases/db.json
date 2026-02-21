@@ -31,247 +31,6 @@
           "comment": "Table with encrypted `secret` column for storing sensitive information on disk."
         }
       },
-      "auth.saml_relay_states": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Contains SAML Relay State information for each Service Provider initiated login."
-        }
-      },
-      "auth.saml_providers": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Manages SAML Identity Provider connections."
-        }
-      },
-      "auth.instances": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Manages users across multiple sites."
-        }
-      },
-      "auth.schema_migrations": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Manages updates to the auth system."
-        }
-      },
-      "auth.refresh_tokens": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Store of tokens used to refresh JWT tokens once they expire."
-        }
-      },
-      "auth.one_time_tokens": {
-        "db": {
-          "schema": "auth"
-        }
-      },
-      "auth.sso_domains": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Manages SSO email address domain mapping to an SSO Identity Provider."
-        }
-      },
-      "auth.users": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Stores user login data within a secure schema."
-        },
-        "refs": {
-          "auth.one_time_tokens": "user_id",
-          "auth.mfa_factors": "user_id",
-          "auth.identities": "user_id",
-          "auth.oauth_authorizations": "user_id",
-          "auth.oauth_consents": "user_id",
-          "auth.sessions": "user_id"
-        }
-      },
-      "auth.audit_log_entries": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Audit trail for user actions."
-        },
-        "columns": {
-          "instance_id": {
-            "db": {
-              "type": "uuid",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "id": {
-            "db": {
-              "type": "uuid",
-              "primary": true,
-              "unique": true,
-              "nullable": false
-            }
-          },
-          "payload": {
-            "db": {
-              "type": "json",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "created_at": {
-            "db": {
-              "type": "timestamp",
-              "useTz": true,
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "ip_address": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 64,
-              "primary": false,
-              "unique": false,
-              "nullable": false
-            }
-          }
-        }
-      },
-      "auth.mfa_factors": {
-        "db": {
-          "schema": "auth",
-          "comment": "auth: stores metadata about factors"
-        },
-        "refs": {
-          "auth.mfa_challenges": "factor_id"
-        }
-      },
-      "auth.sso_providers": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Manages SSO identity provider information; see saml_providers for SAML."
-        },
-        "refs": {
-          "auth.saml_relay_states": "sso_provider_id",
-          "auth.saml_providers": "sso_provider_id",
-          "auth.sso_domains": "sso_provider_id"
-        }
-      },
-      "auth.mfa_challenges": {
-        "db": {
-          "schema": "auth",
-          "comment": "auth: stores metadata about challenge requests made"
-        }
-      },
-      "auth.mfa_amr_claims": {
-        "db": {
-          "schema": "auth",
-          "comment": "auth: stores authenticator method reference claims for multi factor authentication"
-        }
-      },
-      "auth.identities": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Stores identities associated to a user."
-        }
-      },
-      "auth.oauth_clients": {
-        "db": {
-          "schema": "auth"
-        },
-        "refs": {
-          "auth.oauth_authorizations": "client_id",
-          "auth.oauth_consents": "client_id",
-          "auth.sessions": "oauth_client_id"
-        }
-      },
-      "auth.oauth_authorizations": {
-        "db": {
-          "schema": "auth"
-        }
-      },
-      "auth.oauth_consents": {
-        "db": {
-          "schema": "auth"
-        }
-      },
-      "auth.sessions": {
-        "db": {
-          "schema": "auth",
-          "comment": "Auth: Stores session data associated to a user."
-        },
-        "refs": {
-          "auth.refresh_tokens": "session_id",
-          "auth.mfa_amr_claims": "session_id"
-        }
-      },
-      "auth.oauth_client_states": {
-        "db": {
-          "schema": "auth",
-          "comment": "Stores OAuth states for third-party provider authentication flows where Supabase acts as the OAuth client."
-        }
-      },
-      "auth.flow_state": {
-        "db": {
-          "schema": "auth",
-          "comment": "Stores metadata for all OAuth/SSO login flows"
-        },
-        "refs": {
-          "auth.saml_relay_states": "flow_state_id"
-        }
-      },
-      "storage.buckets": {
-        "db": {
-          "schema": "storage"
-        },
-        "refs": {
-          "storage.s3_multipart_uploads": "bucket_id",
-          "storage.s3_multipart_uploads_parts": "bucket_id",
-          "storage.objects": "bucket_id"
-        }
-      },
-      "storage.migrations": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.s3_multipart_uploads": {
-        "db": {
-          "schema": "storage"
-        },
-        "sub": {
-          "storage.s3_multipart_uploads_parts": "upload_id"
-        }
-      },
-      "storage.buckets_vectors": {
-        "db": {
-          "schema": "storage"
-        },
-        "refs": {
-          "storage.vector_indexes": "bucket_id"
-        }
-      },
-      "storage.s3_multipart_uploads_parts": {
-        "db": {
-          "schema": "storage"
-        },
-        "parent": "s3_multipart_uploads"
-      },
-      "storage.vector_indexes": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.buckets_analytics": {
-        "db": {
-          "schema": "storage"
-        }
-      },
-      "storage.objects": {
-        "db": {
-          "schema": "storage"
-        }
-      },
       "empresas": {
         "db": {
           "schema": "public"
@@ -400,6 +159,7 @@
           "usuarios": "empresa_selecionada",
           "departamento_membro": "ref_empresa_memb",
           "usuario_empresa": "ref_empresa",
+          "fornecedores": "ref_empresa_forn",
           "departamentos": "empresa_dep_ref"
         }
       },
@@ -636,6 +396,236 @@
         },
         "parent": "usuarios"
       },
+      "fornecedores": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id_fornecedor": {
+            "db": {
+              "type": "bigIncrements",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "forncedor_created_at": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "pf_nome": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_cpf": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_categoria": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_telefone": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_whatsapp": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_endereco": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_cep": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_bairro": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_cidade": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pf_estado": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_razao_social": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_nome_fantasia": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_cnpj": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_categoria": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_email": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_telefone": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_whatsapp": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_endereco": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_cep": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_bairro": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_cidade": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "pj_estado": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "ref_empresa_forn": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "empresas",
+              "referenceType": "uuid",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "descricao": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        }
+      },
       "departamentos": {
         "db": {
           "schema": "public"
@@ -694,6 +684,247 @@
         },
         "sub": {
           "departamento_membro": "ref_depart_memb"
+        }
+      },
+      "storage.buckets": {
+        "db": {
+          "schema": "storage"
+        },
+        "refs": {
+          "storage.s3_multipart_uploads": "bucket_id",
+          "storage.s3_multipart_uploads_parts": "bucket_id",
+          "storage.objects": "bucket_id"
+        }
+      },
+      "storage.migrations": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.s3_multipart_uploads": {
+        "db": {
+          "schema": "storage"
+        },
+        "sub": {
+          "storage.s3_multipart_uploads_parts": "upload_id"
+        }
+      },
+      "storage.buckets_vectors": {
+        "db": {
+          "schema": "storage"
+        },
+        "refs": {
+          "storage.vector_indexes": "bucket_id"
+        }
+      },
+      "storage.s3_multipart_uploads_parts": {
+        "db": {
+          "schema": "storage"
+        },
+        "parent": "s3_multipart_uploads"
+      },
+      "storage.vector_indexes": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.buckets_analytics": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "storage.objects": {
+        "db": {
+          "schema": "storage"
+        }
+      },
+      "auth.saml_relay_states": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Contains SAML Relay State information for each Service Provider initiated login."
+        }
+      },
+      "auth.saml_providers": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Manages SAML Identity Provider connections."
+        }
+      },
+      "auth.instances": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Manages users across multiple sites."
+        }
+      },
+      "auth.schema_migrations": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Manages updates to the auth system."
+        }
+      },
+      "auth.refresh_tokens": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Store of tokens used to refresh JWT tokens once they expire."
+        }
+      },
+      "auth.one_time_tokens": {
+        "db": {
+          "schema": "auth"
+        }
+      },
+      "auth.sso_domains": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Manages SSO email address domain mapping to an SSO Identity Provider."
+        }
+      },
+      "auth.users": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Stores user login data within a secure schema."
+        },
+        "refs": {
+          "auth.one_time_tokens": "user_id",
+          "auth.mfa_factors": "user_id",
+          "auth.identities": "user_id",
+          "auth.oauth_authorizations": "user_id",
+          "auth.oauth_consents": "user_id",
+          "auth.sessions": "user_id"
+        }
+      },
+      "auth.audit_log_entries": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Audit trail for user actions."
+        },
+        "columns": {
+          "instance_id": {
+            "db": {
+              "type": "uuid",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "id": {
+            "db": {
+              "type": "uuid",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "payload": {
+            "db": {
+              "type": "json",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "created_at": {
+            "db": {
+              "type": "timestamp",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "ip_address": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 64,
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          }
+        }
+      },
+      "auth.mfa_factors": {
+        "db": {
+          "schema": "auth",
+          "comment": "auth: stores metadata about factors"
+        },
+        "refs": {
+          "auth.mfa_challenges": "factor_id"
+        }
+      },
+      "auth.sso_providers": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Manages SSO identity provider information; see saml_providers for SAML."
+        },
+        "refs": {
+          "auth.saml_relay_states": "sso_provider_id",
+          "auth.saml_providers": "sso_provider_id",
+          "auth.sso_domains": "sso_provider_id"
+        }
+      },
+      "auth.mfa_challenges": {
+        "db": {
+          "schema": "auth",
+          "comment": "auth: stores metadata about challenge requests made"
+        }
+      },
+      "auth.mfa_amr_claims": {
+        "db": {
+          "schema": "auth",
+          "comment": "auth: stores authenticator method reference claims for multi factor authentication"
+        }
+      },
+      "auth.identities": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Stores identities associated to a user."
+        }
+      },
+      "auth.oauth_clients": {
+        "db": {
+          "schema": "auth"
+        },
+        "refs": {
+          "auth.oauth_authorizations": "client_id",
+          "auth.oauth_consents": "client_id",
+          "auth.sessions": "oauth_client_id"
+        }
+      },
+      "auth.oauth_authorizations": {
+        "db": {
+          "schema": "auth"
+        }
+      },
+      "auth.oauth_consents": {
+        "db": {
+          "schema": "auth"
+        }
+      },
+      "auth.sessions": {
+        "db": {
+          "schema": "auth",
+          "comment": "Auth: Stores session data associated to a user."
+        },
+        "refs": {
+          "auth.refresh_tokens": "session_id",
+          "auth.mfa_amr_claims": "session_id"
+        }
+      },
+      "auth.oauth_client_states": {
+        "db": {
+          "schema": "auth",
+          "comment": "Stores OAuth states for third-party provider authentication flows where Supabase acts as the OAuth client."
+        }
+      },
+      "auth.flow_state": {
+        "db": {
+          "schema": "auth",
+          "comment": "Stores metadata for all OAuth/SSO login flows"
+        },
+        "refs": {
+          "auth.saml_relay_states": "flow_state_id"
         }
       }
     },

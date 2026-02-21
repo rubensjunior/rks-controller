@@ -1,3 +1,151 @@
 {
-  "exec": {}
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "pf_nome",
+        "name": "pf_nome"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_cpf",
+        "name": "pf_cpf"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_categoria",
+        "name": "pf_categoria"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_email",
+        "name": "pf_email"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_telefone",
+        "name": "pf_telefone"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_whatsapp",
+        "name": "pf_whatsapp"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_endereco",
+        "name": "pf_endereco"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_cep",
+        "name": "pf_cep"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_bairro",
+        "name": "pf_bairro"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_cidade",
+        "name": "pf_cidade"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_estado",
+        "name": "pf_estado"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_razao_social",
+        "name": "pj_razao_social"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_nome_fantasia",
+        "name": "pf_nome_fantasia"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_cnpj",
+        "name": "pj_cnpj"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_categoria",
+        "name": "pj_categoria"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_email",
+        "name": "pj_email"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_telefone",
+        "name": "pj_telefone"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_whatsapp",
+        "name": "pj_whatsapp"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_endereco",
+        "name": "pj_endereco"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_cep",
+        "name": "pj_cep"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_bairro",
+        "name": "pj_bairro"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_cidade",
+        "name": "pj_cidade"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_estado",
+        "name": "pj_estado"
+      },
+      {
+        "type": "text",
+        "fieldName": "pf_obs",
+        "name": "pf_obs"
+      },
+      {
+        "type": "text",
+        "fieldName": "pj_obs",
+        "name": "pj_obs"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert_empresa",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db"
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
 }
